@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l /Users/tony/Documents/uhn/tailwind-nextjs-starter-blog/data/blog/*.mdx)",
+      "Bash(grep -v -E '^\\(\\\\.git|\\\\.next|node_modules|\\\\.contentlayer\\)$')",
+      "Bash(rsync -a --exclude='.git' --exclude='.next' --exclude='node_modules' --exclude='.contentlayer' --exclude='.DS_Store' --exclude='CLAUDE.md' --exclude='.claude' . /Users/tony/Documents/uhn/foundation-models-blog/)",
+      "Bash(yarn install:*)",
+      "Bash(yarn build:*)",
+      "Bash(file /Users/tony/Documents/uhn/foundation-models-blog/public/static/favicons/*.png /Users/tony/Documents/uhn/foundation-models-blog/public/static/favicons/*.svg)",
+      "Bash(ls:*)"
+    ]
+  }
+}

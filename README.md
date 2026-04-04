@@ -74,13 +74,13 @@ layout: PostLayout
 
 ## Deploy
 
-### Vercel (recommended)
+### GitHub Pages (recommended)
+
+A `pages.yml` workflow is provided in `.github/workflows/`. Select "GitHub Actions" in: Settings > Pages > Build and deployment > Source. Pushes to `main` or `blogs` branch trigger automatic deployment.
+
+### Vercel (optional)
 
 Push to GitHub and import in [Vercel](https://vercel.com). No extra configuration needed.
-
-### GitHub Pages
-
-A `pages.yml` workflow is provided in `.github/workflows/`. Select "GitHub Actions" in: Settings > Pages > Build and deployment > Source.
 
 ### Static Export
 

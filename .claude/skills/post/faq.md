@@ -1,26 +1,26 @@
 # Blog Writing FAQ
 
-> In all examples below, `{slug}` is the MDX filename without extension (e.g. for `data/blog/2026/my-first-post.mdx`, the slug is `my-first-post`).
+> In all examples below, `{slug}` is the MDX filename without extension (e.g. for `data/blog/2026/01/my-first-post.mdx`, the slug is `my-first-post`).
 
 ## How to add images
 
-1. Place image files in `public/static/images/{year}/{slug}/`
+1. Place image files in `public/static/images/{year}/{month}/{slug}/`
 2. Reference in MDX:
    ```mdx
-   ![Alt text](/static/images/{year}/{slug}/image.png)
+   ![Alt text](/static/images/{year}/{month}/{slug}/image.png)
    ```
 3. For images with captions or custom sizing, use the `Image` component from Next.js:
    ```mdx
    import Image from 'next/image'
 
-   <Image src="/static/images/{year}/{slug}/image.png" alt="Alt text" width={800} height={400} />
+   <Image src="/static/images/{year}/{month}/{slug}/image.png" alt="Alt text" width={800} height={400} />
    ```
 
 **Important:** Before adding images larger than 1MB, compress them first using [TinyPNG](https://tinypng.com/) to reduce file size while maintaining visual quality.
 
-**Example:** For a post at `data/blog/2026/my-first-post.mdx` with an image `hero.png`:
-- Place the file at `public/static/images/2026/my-first-post/hero.png`
-- Reference it as `![Hero](/static/images/2026/my-first-post/hero.png)`
+**Example:** For a post at `data/blog/2026/01/my-first-post.mdx` with an image `hero.png`:
+- Place the file at `public/static/images/2026/01/my-first-post/hero.png`
+- Reference it as `![Hero](/static/images/2026/01/my-first-post/hero.png)`
 
 ## How to embed videos
 
@@ -112,12 +112,12 @@ Details...
 
 Use the `PostBanner` layout and set `images` in frontmatter.
 
-**Example:** For `data/blog/2026/my-first-post.mdx` with a banner image:
+**Example:** For `data/blog/2026/01/my-first-post.mdx` with a banner image:
 ```yaml
 ---
 title: 'My First Post'
 date: '2026-01-01'
-images: ['/static/images/2026/my-first-post/banner.jpg']
+images: ['/static/images/2026/01/my-first-post/banner.jpg']
 layout: PostBanner
 ---
 ```
@@ -126,9 +126,9 @@ layout: PostBanner
 
 Use standard Markdown links with the post's URL path.
 
-**Example:** Linking to `data/blog/2026/getting-started.mdx`:
+**Example:** Linking to `data/blog/2026/03/getting-started.mdx`:
 ```mdx
-Check out my [getting started guide](/blog/2026/getting-started).
+Check out my [getting started guide](/blog/2026/03/getting-started).
 ```
 
 ## How to create a multi-part series
@@ -137,14 +137,14 @@ Create a subdirectory under `data/blog/{year}/` with parts.
 
 **Example:** A 3-part tutorial series:
 ```
-data/blog/2026/react-tutorial/
+data/blog/2026/06/react-tutorial/
 ├── part-1.mdx
 ├── part-2.mdx
 └── part-3.mdx
 ```
-- Part 1 URL: `/blog/2026/react-tutorial/part-1`
-- Part 2 URL: `/blog/2026/react-tutorial/part-2`
-- Part 3 URL: `/blog/2026/react-tutorial/part-3`
+- Part 1 URL: `/blog/2026/06/react-tutorial/part-1`
+- Part 2 URL: `/blog/2026/06/react-tutorial/part-2`
+- Part 3 URL: `/blog/2026/06/react-tutorial/part-3`
 
 ## How to add alerts/callouts
 
@@ -182,7 +182,7 @@ Then cite in the body: `According to [@smith2024], transformer models...`
 
 This blog is deployed via **GitHub Pages** using GitHub Actions. To publish:
 
-1. Write your post in `data/blog/{year}/{slug}.mdx`
+1. Write your post in `data/blog/{year}/{month}/{slug}.mdx`
 2. Make sure `draft: false` in frontmatter (drafts with `draft: true` are excluded from the build)
 3. Commit and push to the `main` branch:
    ```bash
@@ -191,10 +191,10 @@ This blog is deployed via **GitHub Pages** using GitHub Actions. To publish:
    git push origin main
    ```
 4. GitHub Actions will automatically build and deploy the site — check the **Actions** tab in your repository for build status
-5. Once the workflow completes, the post will be live at `{siteUrl}/blog/{year}/{slug}`
+5. Once the workflow completes, the post will be live at `{siteUrl}/blog/{year}/{month}/{slug}`
 
 **Tips:**
-- To preview locally before publishing, run `yarn dev` and visit `http://localhost:3000/blog/{year}/{slug}`
+- To preview locally before publishing, run `yarn dev` and visit `http://localhost:3000/blog/{year}/{month}/{slug}`
 - If you want to save a work-in-progress without publishing, set `draft: true` in frontmatter — the post won't appear on the site but will exist in the repository
 - After pushing, the build typically takes 1-3 minutes to complete
 

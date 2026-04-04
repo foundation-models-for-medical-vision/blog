@@ -50,7 +50,9 @@ Start writing here...
 
 5. Create the image directory at `public/static/images/{year}/{month}/{slug}/`.
 
-6. After creating the file, briefly confirm and remind the user:
+6. **Sync authors and tags** (same as Publish Draft step 8): create missing author files in `data/authors/` (ask user for display name and bio), and update `app/tag-data.json` for any new or existing tags.
+
+7. After creating the file, briefly confirm and remind the user:
    - The file path and post URL
    - Images go in `public/static/images/{year}/{month}/{slug}/`
    - They can continue to ask you to modify the post (add tags, summary, content, etc.) or edit the file directly
@@ -101,14 +103,33 @@ Images are expected to be in the **same directory** as the `.md` file.
 
 7. **Write the `.mdx` file** to `data/blog/{year}/{month}/{slug}.mdx` with the final frontmatter + rewritten content.
 
-8. **Build verification.** Run `yarn build` to verify the generated `.mdx` compiles successfully. If the build fails:
+8. **Sync authors and tags.**
+
+   - **Authors**: Check each author in the `authors` frontmatter field against existing files in `data/authors/`. If an author file does not exist (e.g., `authors: ['john']` but `data/authors/john.mdx` is missing), ask the user for the author's display name and a short bio, then create `data/authors/{author}.mdx` with this template:
+     ```mdx
+     ---
+     name: '{display name}'
+     avatar: /static/images/avatar.png
+     occupation: ''
+     company: ''
+     email: ''
+     x: ''
+     linkedin: ''
+     github: ''
+     ---
+
+     {short bio}
+     ```
+   - **Tags**: Read `app/tag-data.json`. For each tag in the post's `tags` frontmatter that is not already a key in `tag-data.json`, add it with a count of `1`. For tags that already exist, increment their count by `1`. Write the updated JSON back to `app/tag-data.json` (keys sorted alphabetically, 2-space indent).
+
+9. **Build verification.** Run `yarn build` to verify the generated `.mdx` compiles successfully. If the build fails:
    - Read the error output and fix the issue in the generated `.mdx` file (e.g., invalid frontmatter, broken image paths, unsupported MDX syntax).
    - Re-run `yarn build` to confirm the fix.
    - Repeat until the build passes. Do NOT proceed to the next step until the build succeeds.
 
-9. **Delete the published `.md` file** from its location under `drafts/` (keep other files intact). Do NOT delete images from `drafts/` — the user may want to keep originals.
+10. **Keep the original files.** Do NOT delete the `.md` file or images from `drafts/`. The user may want to keep originals for reference.
 
-10. **Print the generated file tree** so the user can see what was created. Use a tree-style listing showing all new/modified paths, for example:
+11. **Print the generated file tree** so the user can see what was created. Use a tree-style listing showing all new/modified paths, for example:
     ```
     data/blog/2026/04/my-article.mdx
     public/static/images/2026/04/my-article/
@@ -116,10 +137,10 @@ Images are expected to be in the **same directory** as the `.md` file.
     └── image2.jpg
     ```
 
-11. **Show a summary** to the user:
+12. **Show a summary** to the user:
     - The final frontmatter values (title, date, tags, summary)
     - Post URL (`/blog/{year}/{month}/{slug}`)
     - Build verification result (passed)
 
-12. **Ask the user to confirm** before committing. Wait for explicit approval, then commit and push.
+13. **Ask the user to confirm** before committing. Wait for explicit approval, then commit and push.
 

@@ -2,7 +2,6 @@ import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
-import NewsletterForm from 'pliny/ui/NewsletterForm'
 
 const MAX_DISPLAY = 5
 
@@ -81,11 +80,14 @@ export default function Home({ posts }) {
           </Link>
         </div>
       )}
-      {siteMetadata.newsletter?.provider && (
-        <div className="flex items-center justify-center pt-4">
-          <NewsletterForm />
-        </div>
-      )}
+      <div className="flex items-center justify-center pt-4">
+        <Link
+          href="https://forms.gle/bLxGb5SEpdLCUChQ7"
+          className="bg-primary-500 hover:bg-primary-600 dark:hover:bg-primary-400 rounded-md px-6 py-3 text-sm font-medium text-white"
+        >
+          Subscribe
+        </Link>
+      </div>
     </>
   )
 }

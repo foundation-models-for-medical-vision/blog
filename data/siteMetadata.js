@@ -2,10 +2,10 @@
 const siteMetadata = {
   title: 'Foundation Models for Medical Vision',
   author: 'Jun Ma',
-  headerTitle: 'Foundation Models for Medical Vision',
+  headerTitle: 'Blog',
   description: 'Foundation Models for Medical Vision',
   language: 'en-us',
-  theme: 'system', // system, dark or light
+  theme: 'light', // system, dark or light
   siteUrl: 'https://junma.ai/blog',
   siteRepo: 'https://github.com/JunMa11/foundation-models-blog',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,

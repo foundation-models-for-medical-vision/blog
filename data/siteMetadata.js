@@ -7,7 +7,7 @@ const siteMetadata = {
   language: 'en-us',
   theme: 'light', // system, dark or light
   siteUrl: 'https://junma.ai/blog',
-  siteRepo: 'https://github.com/JunMa11/foundation-models-blog',
+  siteRepo: 'https://github.com/foundation-models-for-medical-vision/blog',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   email: '',

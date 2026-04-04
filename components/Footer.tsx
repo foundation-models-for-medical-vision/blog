@@ -18,11 +18,17 @@ export default function Footer() {
           <div>{` • `}</div>
           <Link href="/">{siteMetadata.title}</Link>
         </div>
-        <div className="mb-8 text-sm text-gray-500 dark:text-gray-400">
+        <div className="mb-2 text-sm text-gray-500 dark:text-gray-400">
           <Link href="https://github.com/timlrx/tailwind-nextjs-starter-blog">
             Tailwind Nextjs Theme
           </Link>
         </div>
+        <a href="https://clustrmaps.com/site/1c9mt" title="Visit tracker" className="mt-2 mb-8">
+          <img
+            alt="Visit tracker"
+            src="//clustrmaps.com/map_v2.png?cl=ffffff&w=a&t=n&d=lwn_5sJkXuM0zzFohu6DeRWGveN7s8AnvHz7GtlfmIs&co=2d78ad&ct=ffffff"
+          />
+        </a>
       </div>
     </footer>
   )

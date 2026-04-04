@@ -79,7 +79,12 @@ module.exports = () => {
     },
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     images: {
-      remotePatterns: [],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'avatars.githubusercontent.com',
+        },
+      ],
       unoptimized,
     },
     async headers() {

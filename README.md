@@ -33,7 +33,7 @@ date: '2026-04-04'
 tags: ['segmentation', 'foundation-model']
 draft: false
 summary: 'A brief summary for the listing page.'
-authors: ['default']
+authors: ['junma']
 layout: PostLayout
 ---
 ```

@@ -27,7 +27,7 @@ First, **recursively search the `drafts/` directory** (including all subdirector
    - **Tags**: `[]`
    - **Draft**: `false`
    - **Summary**: `''`
-   - **Authors**: `['default']`
+   - **Authors**: `['junma']`
 
 2. Generate the slug from the title (lowercase, hyphens, no special characters).
 
@@ -42,7 +42,7 @@ date: '{date}'
 tags: []
 draft: false
 summary: ''
-authors: ['default']
+authors: ['junma']
 ---
 
 Start writing here...
@@ -82,30 +82,39 @@ Images are expected to be in the **same directory** as the `.md` file.
 
 1. **Read the `.md` file** from `drafts/` and parse its content.
 
-2. **Derive the slug** from the `.md` filename (strip extension, lowercase, hyphens, no special characters).
+2. **Pre-check: validate required files and information.** Before any processing, analyze the draft and report what is ready and what is missing. Present a checklist to the user:
 
-3. **Build frontmatter.** The `.md` file may or may not have YAML frontmatter. Fill in any missing fields with defaults:
+   - **Frontmatter fields**: List which fields are present in the draft and which will use defaults. Show the resolved values (present or default) for: `title`, `date`, `tags`, `summary`, `authors`.
+   - **Authors**: For each author in the `authors` field (or `['junma']` if absent), check whether a matching file exists in `data/authors/`. If any author file is missing, **stop and ask the user** for each missing author's display name and short bio before proceeding. Create the author file immediately using the template in step 9.
+   - **Images**: Scan the content for image references (`![...](...)`, `src="..."`, etc.). For each referenced image, check whether the file exists in the same directory as the `.md` file. Report any missing image files.
+   - **Bibliography**: If the content contains citations (`[@...]`), check whether a `bibliography` field is set in frontmatter and the referenced `.bib` file exists.
+
+   **Wait for user confirmation** that the checklist looks correct and all missing items are resolved before proceeding.
+
+3. **Derive the slug** from the `.md` filename (strip extension, lowercase, hyphens, no special characters).
+
+4. **Build frontmatter.** The `.md` file may or may not have YAML frontmatter. Fill in any missing fields with defaults:
    - **title**: Use frontmatter value if present; otherwise derive from filename (hyphens → spaces, title case).
    - **date**: Use frontmatter value if present; otherwise use today (YYYY-MM-DD).
    - **tags**: Use frontmatter value if present; otherwise `[]`.
    - **draft**: Always set to `false`.
    - **summary**: Use frontmatter value if present; if missing or empty, read the post content and generate a concise 1–2 sentence summary.
-   - **authors**: Use frontmatter value if present; otherwise `['default']`.
+   - **authors**: Use frontmatter value if present; otherwise `['junma']`.
 
-4. **Determine the year and month** (two-digit, e.g. `04`) from the `date` field.
+5. **Determine the year and month** (two-digit, e.g. `04`) from the `date` field.
 
-5. **Copy images.** Find all image files (`*.png`, `*.jpg`, `*.jpeg`, `*.gif`, `*.webp`, `*.svg`) in the **same directory** as the `.md` file. Copy them to `public/static/images/{year}/{month}/{slug}/` (create the directory if needed).
+6. **Copy images.** Find all image files (`*.png`, `*.jpg`, `*.jpeg`, `*.gif`, `*.webp`, `*.svg`) in the **same directory** as the `.md` file. Copy them to `public/static/images/{year}/{month}/{slug}/` (create the directory if needed).
 
-6. **Rewrite image paths** in the content. Replace relative image references with the canonical blog path `/static/images/{year}/{month}/{slug}/{filename}`. Handle:
+7. **Rewrite image paths** in the content. Replace relative image references with the canonical blog path `/static/images/{year}/{month}/{slug}/{filename}`. Handle:
    - `./image.png`, `image.png`, `../image.png` (relative paths)
    - Markdown syntax: `![alt](path)`
    - HTML/JSX syntax: `src="path"` or `src={...}`
 
-7. **Write the `.mdx` file** to `data/blog/{year}/{month}/{slug}.mdx` with the final frontmatter + rewritten content.
+8. **Write the `.mdx` file** to `data/blog/{year}/{month}/{slug}.mdx` with the final frontmatter + rewritten content.
 
-8. **Sync authors and tags.**
+9. **Sync tags and create missing author files.**
 
-   - **Authors**: Check each author in the `authors` frontmatter field against existing files in `data/authors/`. If an author file does not exist (e.g., `authors: ['john']` but `data/authors/john.mdx` is missing), ask the user for the author's display name and a short bio, then create `data/authors/{author}.mdx` with this template:
+   - **Authors**: For each missing author identified in step 2 (user already provided display name and bio), create `data/authors/{author}.mdx` with this template:
      ```mdx
      ---
      name: '{display name}'
@@ -122,14 +131,14 @@ Images are expected to be in the **same directory** as the `.md` file.
      ```
    - **Tags**: Read `app/tag-data.json`. For each tag in the post's `tags` frontmatter that is not already a key in `tag-data.json`, add it with a count of `1`. For tags that already exist, increment their count by `1`. Write the updated JSON back to `app/tag-data.json` (keys sorted alphabetically, 2-space indent).
 
-9. **Build verification.** Run `yarn build` to verify the generated `.mdx` compiles successfully. If the build fails:
-   - Read the error output and fix the issue in the generated `.mdx` file (e.g., invalid frontmatter, broken image paths, unsupported MDX syntax).
-   - Re-run `yarn build` to confirm the fix.
-   - Repeat until the build passes. Do NOT proceed to the next step until the build succeeds.
+10. **Build verification.** Run `yarn build` to verify the generated `.mdx` compiles successfully. If the build fails:
+    - Read the error output and fix the issue in the generated `.mdx` file (e.g., invalid frontmatter, broken image paths, unsupported MDX syntax).
+    - Re-run `yarn build` to confirm the fix.
+    - Repeat until the build passes. Do NOT proceed to the next step until the build succeeds.
 
-10. **Keep the original files.** Do NOT delete the `.md` file or images from `drafts/`. The user may want to keep originals for reference.
+11. **Keep the original files.** Do NOT delete the `.md` file or images from `drafts/`. The user may want to keep originals for reference.
 
-11. **Print the generated file tree** so the user can see what was created. Use a tree-style listing showing all new/modified paths, for example:
+12. **Print the generated file tree** so the user can see what was created. Use a tree-style listing showing all new/modified paths, for example:
     ```
     data/blog/2026/04/my-article.mdx
     public/static/images/2026/04/my-article/
@@ -137,10 +146,10 @@ Images are expected to be in the **same directory** as the `.md` file.
     └── image2.jpg
     ```
 
-12. **Show a summary** to the user:
+13. **Show a summary** to the user:
     - The final frontmatter values (title, date, tags, summary)
     - Post URL (`/blog/{year}/{month}/{slug}`)
     - Build verification result (passed)
 
-13. **Ask the user to confirm** before committing. Wait for explicit approval, then commit and push.
+14. **Ask the user to confirm** before committing. Wait for explicit approval, then commit and push.
 

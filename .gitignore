@@ -51,7 +51,6 @@ yarn-error.log*
 !/drafts/.gitkeep
 
 # Claude
-CLAUDE.md
 .claude/settings.local.json
 
 .cursor

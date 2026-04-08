@@ -21,41 +21,73 @@ yarn lint         # ESLint with auto-fix
 yarn analyze      # Bundle size analysis
 ```
 
-## Writing Blog Posts
+## Publishing Blog Posts
 
-1. Create a `.mdx` file in `data/blog/` (nested directories supported).
-2. Add frontmatter:
+This project uses [Claude Code](https://claude.ai/code) skills to streamline blog publishing. The `/post` skill automates frontmatter generation, image handling, and content validation.
+
+**TL;DR** — three steps to publish:
+
+1. Put your `.md` file and images in `drafts/`
+2. Run `/post` in Claude Code
+3. Confirm and push — done
+
+### Prerequisites
+
+1. Clone the repo and open [Claude Code](https://claude.ai/code) in the repo directory:
+   ```bash
+   git clone https://github.com/foundation-models-for-medical-vision/blog.git
+   cd blog
+   ```
+2. Make sure [Claude Code](https://claude.ai/code) is installed — it's available as a CLI, desktop app, web app, or IDE extension.
+
+### Publishing with `/post` (recommended)
+
+1. **Prepare your draft.** Place your `.md` file and any images in the `drafts/` directory:
+   ```
+   drafts/
+     my-article.md
+     hero.png
+     figures/
+       fig1.png
+   ```
+2. **Run `/post`** in Claude Code. The skill will:
+   - Auto-detect your `.md` file (or ask you to pick one if there are multiple)
+   - Validate frontmatter — only `title` and `authors` need confirmation; `date`, `tags`, `summary` are filled automatically if missing
+   - Copy images to `public/static/images/{year}/{month}/{slug}/` and rewrite paths in the content
+   - Write the final `.mdx` file to `data/blog/{year}/{month}/{slug}.mdx`
+   - Run content verification (YAML validity, image existence, MDX syntax)
+   - Ask for your confirmation, then commit and push
+
+3. **That's it.** GitHub Actions will build and deploy the site automatically.
+
+### Creating a new post from scratch
+
+If you don't have a draft file, run `/post` with an empty `drafts/` directory. Claude Code will offer to create a new `.mdx` file with the correct frontmatter template — just provide a title.
+
+### Manual publishing
+
+You can also create `.mdx` files directly under `data/blog/{year}/{month}/`:
 
 ```yaml
 ---
-title: 'Your Post Title'
-date: '2026-04-04'
-tags: ['segmentation', 'foundation-model']
+title: 'My Post'
+date: '2026-04-01'
+tags: ['deep-learning']
 draft: false
-summary: 'A brief summary for the listing page.'
+summary: 'A brief summary.'
 authors: ['junma']
-layout: PostLayout
 ---
+
+Start writing here...
 ```
 
-3. Write content in MDX (Markdown + JSX). Available components: `Image`, `TOCInline`, code blocks with syntax highlighting, KaTeX math, GitHub-style alerts.
-4. Place images in `public/static/images/` and reference as `/static/images/filename.png`.
+Images go in `public/static/images/{year}/{month}/{slug}/`.
 
-### Frontmatter Fields
+### FAQ & help
 
-| Field          | Required | Description                                              |
-| -------------- | -------- | -------------------------------------------------------- |
-| `title`        | Yes      | Post title                                               |
-| `date`         | Yes      | Publication date (YYYY-MM-DD)                            |
-| `tags`         | No       | List of tags (auto-indexed at build time)                |
-| `lastmod`      | No       | Last modified date                                       |
-| `draft`        | No       | Set `true` to hide from production                       |
-| `summary`      | No       | Brief description for listing and social share           |
-| `images`       | No       | Open Graph images                                        |
-| `authors`      | No       | List of author filenames (defaults to `['default']`)     |
-| `layout`       | No       | `PostLayout` (default), `PostSimple`, or `PostBanner`    |
-| `bibliography` | No       | Path to `.bib` file for citations                        |
-| `canonicalUrl` | No       | Canonical URL for SEO                                    |
+The full blog writing FAQ (images, videos, math, citations, layouts, etc.) is built into the skill. Just ask Claude Code any question about blog writing, or run `/post` and ask — the skill will answer based on the project's FAQ docs.
+
+> **Using other AI coding agents?** The skill files under `.claude/skills/` are plain markdown — copy the content into your agent's rules file (e.g., `.cursorrules`) and it can follow the same workflow. The `/post` slash command is Claude Code–specific, but the instructions themselves are universal.
 
 ## Customization
 

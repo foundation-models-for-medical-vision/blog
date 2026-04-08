@@ -1,25 +1,6 @@
 # Foundation Models for Medical Vision — Blog
 
-A research blog built with [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/), and [Contentlayer](https://www.contentlayer.dev/), based on the [tailwind-nextjs-starter-blog](https://github.com/timlrx/tailwind-nextjs-starter-blog) template.
-
-## Quick Start
-
-```bash
-yarn install
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the site.
-
-## Commands
-
-```bash
-yarn dev          # Start dev server (localhost:3000, Turbopack)
-yarn build        # Production build + RSS feed generation
-yarn serve        # Start production server
-yarn lint         # ESLint with auto-fix
-yarn analyze      # Bundle size analysis
-```
+A research blog for Jun Ma's group at UHN (University Health Network). Publish posts with [Claude Code](https://claude.ai/code) — just drop your draft and run `/post`.
 
 ## Publishing Blog Posts
 
@@ -30,6 +11,8 @@ This project uses [Claude Code](https://claude.ai/code) skills to streamline blo
 1. Put your `.md` file and images in `drafts/`
 2. Run `/post` in Claude Code
 3. Confirm and push — done
+
+**Or, just ask Claude Code "how to post a blog" — it knows the workflow.**
 
 ### Prerequisites
 
@@ -59,6 +42,14 @@ This project uses [Claude Code](https://claude.ai/code) skills to streamline blo
    - Ask for your confirmation, then commit and push
 
 3. **That's it.** GitHub Actions will build and deploy the site automatically.
+
+> **Tip:** Specify `title` and `authors` in your draft's frontmatter to skip confirmation prompts:
+> ```yaml
+> ---
+> title: 'My Article'
+> authors: ['junma']
+> ---
+> ```
 
 ### Creating a new post from scratch
 
@@ -91,40 +82,33 @@ The full blog writing FAQ (images, videos, math, citations, layouts, etc.) is bu
 
 ## Customization
 
-| What                   | Where                           |
-| ---------------------- | ------------------------------- |
-| Site metadata & config | `data/siteMetadata.js`          |
-| Navigation links       | `data/headerNavLinks.ts`        |
-| Author profiles        | `data/authors/*.mdx`            |
-| Project cards          | `data/projectsData.ts`          |
-| Logo                   | `data/logo.svg`                 |
-| Favicons               | `public/static/favicons/`       |
-| Theme colors           | `css/tailwind.css`              |
-| Syntax highlighting    | `css/prism.css`                 |
-| Content schema         | `contentlayer.config.ts`        |
-| Security headers       | `next.config.js`                |
+| What                   | Where                     |
+| ---------------------- | ------------------------- |
+| Site metadata & config | `data/siteMetadata.js`    |
+| Navigation links       | `data/headerNavLinks.ts`  |
+| Author profiles        | `data/authors/*.mdx`      |
+| Project cards          | `data/projectsData.ts`    |
+| Logo                   | `data/logo.svg`           |
+| Favicons               | `public/static/favicons/` |
+| Theme colors           | `css/tailwind.css`        |
+| Syntax highlighting    | `css/prism.css`           |
+| Content schema         | `contentlayer.config.ts`  |
+| Security headers       | `next.config.js`          |
 
-## Deploy
+## Local Development & Deployment (optional)
 
-### GitHub Pages (recommended)
-
-A `pages.yml` workflow is provided in `.github/workflows/`. Select "GitHub Actions" in: Settings > Pages > Build and deployment > Source. Pushes to `main` or `blogs` branch trigger automatic deployment.
-
-### Vercel (optional)
-
-Push to GitHub and import in [Vercel](https://vercel.com). No extra configuration needed.
-
-### Static Export
+Deployment is already configured — pushing to the `blogs` branch triggers GitHub Actions to build and deploy automatically. If you want to preview the site locally or hack on the codebase:
 
 ```bash
-EXPORT=1 UNOPTIMIZED=1 yarn build
+yarn install      # Install dependencies
+yarn dev          # Start dev server (localhost:3000, Turbopack)
+yarn build        # Production build + RSS feed generation
+yarn serve        # Start production server
+yarn lint         # ESLint with auto-fix
+yarn analyze      # Bundle size analysis
 ```
 
-For subdirectory hosting (e.g., `https://junma.ai/blog`):
-
-```bash
-EXPORT=1 UNOPTIMIZED=1 BASE_PATH=/blog yarn build
-```
+This is **not required** for publishing posts — the `/post` skill and GitHub Actions handle everything.
 
 ## License
 
